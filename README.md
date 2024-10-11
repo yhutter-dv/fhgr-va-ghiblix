@@ -29,6 +29,9 @@ dotnet publish -c Release -r osx-x64
 dotnet publish -c Release -r osx-arm64
 
 ## Running the Application
+
+> :warning: Make sure that you are in the `src` folder!
+
 If you just want to run the Application without building it, you can simply execute the command `dotnet run`.
 
 ## Acknowledgments
