@@ -28,8 +28,7 @@ public static class Preprocessor
         var preprocessedFullPathWithoutExtension = Path.Join(dataFile.DirectoryName, nameWithoutExtension);
         var preprocessedFileName = $"{preprocessedFullPathWithoutExtension}_{PreprocessSuffix}{dataFile.Extension}";
         var preprocessedDataFile = new FileInfo(preprocessedFileName);
-        var force = true;
-        if (preprocessedDataFile.Exists && !force)
+        if (preprocessedDataFile.Exists)
         {
             // No need to do preprocessing just deserialize from existing already preprocessed file...
             Console.WriteLine($"Preprocessed File {preprocessedDataFile.FullName} already exists using that...");

@@ -7,10 +7,10 @@ public record GhibliDataDto
 {
     
     [JsonPropertyName("films")]
-    public List<GhibliMovieDto> Movies { get; private set; } = [];
+    public List<GhibliMovieDto> Movies { get; set; } = [];
     
     [JsonPropertyName("people")]
-    public List<GhibliPeopleDto> Peoples { get; private set; } = [];
+    public List<GhibliPeopleDto> Peoples { get; set; } = [];
 
     public static GhibliDataDto Preprocess(GhibliData ghibliData)
     {
