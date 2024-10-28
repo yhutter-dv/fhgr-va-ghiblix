@@ -16,6 +16,41 @@ public static class Preprocessor
     };
     private const string PreprocessSuffix = "preprocessed";
 
+    public static async Task DownloadGhibliImages(DirectoryInfo movieBannerDirectory, DirectoryInfo movieImageDirectory, GhibliDataDto dto)
+    {
+        Directory.CreateDirectory(movieBannerDirectory.FullName);
+        Directory.CreateDirectory(movieImageDirectory.FullName);
+        var imagePaths = dto.Movies.Select(m =>
+        (
+            m.Title,
+            m.MovieBanner,
+            m.Image
+        ));
+
+        var imageDownloadTasks = imagePaths.Select(async imagePath =>
+        {
+            var movieBannerPath = $"{Path.Join(movieBannerDirectory.FullName, imagePath.Title)}.png";
+            var movieImagePath = $"{Path.Join(movieImageDirectory.FullName, imagePath.Title)}.png";
+
+            using var httpClient = new HttpClient();
+
+            // Download and save movie banner
+            var bannerResponse = await httpClient.GetAsync(imagePath.MovieBanner);
+            bannerResponse.EnsureSuccessStatusCode();
+            var bannerBytes = await bannerResponse.Content.ReadAsByteArrayAsync();
+            Console.WriteLine($"Saving file {movieBannerPath}");
+            await File.WriteAllBytesAsync(movieBannerPath, bannerBytes);
+
+            // Download and save movie image
+            var imageResponse = await httpClient.GetAsync(imagePath.Image);
+            imageResponse.EnsureSuccessStatusCode();
+            var imageBytes = await imageResponse.Content.ReadAsByteArrayAsync();
+            Console.WriteLine($"Saving file {movieImagePath}");
+            await File.WriteAllBytesAsync(movieImagePath, imageBytes);
+        });
+        await Task.WhenAll(imageDownloadTasks);
+    }
+
     public static GhibliDataDto? Preprocess(FileInfo dataFile)
     {
         if (!dataFile.Exists)
