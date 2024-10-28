@@ -34,8 +34,3 @@ dotnet publish -c Release -r osx-arm64
 
 If you just want to run the Application without building it, you can simply execute the command `dotnet run`.
 
-## Acknowledgments
-Without the awesome people behind these GitHub Projects this would not have been possible.
-
-- [Raylib-CS Bindings](https://github.com/MrScautHD/Raylib-CSharp)
-- [Flexoki Color Scheme](https://github.com/kepano/flexoki)
