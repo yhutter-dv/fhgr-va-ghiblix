@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <PackageReference Include="Figgle" Version="0.5.1" />
-    <PackageReference Include="Raylib-CSharp" Version="4.1.9" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,6 +19,10 @@
     <None Update="Data\data.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GhiblixShared\GhiblixShared.csproj" />
   </ItemGroup>
 
 </Project>

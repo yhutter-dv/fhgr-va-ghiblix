@@ -1,10 +1,10 @@
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Ghiblix.DTOs;
-using Ghiblix.Models;
+using GhiblixPreprocessor.DTOs;
+using GhiblixShared.Models;
 
-namespace Ghiblix.Utils;
+namespace GhiblixPreprocessor.Utils;
 
 public static class Preprocessor
 {

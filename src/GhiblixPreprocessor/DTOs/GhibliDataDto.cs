@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
-using Ghiblix.Models;
+using GhiblixShared.Models;
 
-namespace Ghiblix.DTOs;
+namespace GhiblixPreprocessor.DTOs;
 
 public record GhibliDataDto 
 {

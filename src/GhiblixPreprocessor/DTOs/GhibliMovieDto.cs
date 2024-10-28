@@ -1,8 +1,8 @@
 using System.Text.Json.Serialization;
-using Ghiblix.Models;
-using Ghiblix.Utils;
+using GhiblixPreprocessor.Utils;
+using GhiblixShared.Models;
 
-namespace Ghiblix.DTOs;
+namespace GhiblixPreprocessor.DTOs;
 
 public record GhibliMovieDto 
 {

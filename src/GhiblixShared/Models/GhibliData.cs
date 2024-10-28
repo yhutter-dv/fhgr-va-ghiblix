@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Ghiblix.Models;
+namespace GhiblixShared.Models;
 
 public record GhibliData
 {

@@ -1,4 +1,4 @@
-namespace Ghiblix.Utils;
+namespace GhiblixPreprocessor.Utils;
 
 public static class Constants
 {
