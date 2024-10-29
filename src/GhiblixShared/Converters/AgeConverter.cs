@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace GhiblixShared.Converters;
 
-public class StringToIntConverter : JsonConverter<int>
+public class AgeConverter : JsonConverter<int>
 {
     public override int Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {

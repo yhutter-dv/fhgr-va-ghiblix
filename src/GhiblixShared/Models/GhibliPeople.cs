@@ -8,8 +8,7 @@ public record GhibliPeople
     [JsonPropertyName("id")] public string Id { get; init; } = "";
     [JsonPropertyName("name")] public string Name { get; init; } = "";
     [JsonPropertyName("gender")] public string Gender { get; init; } = "";
-    
-    [JsonConverter(typeof(StringToIntConverter))]
+    [JsonConverter(typeof(AgeConverter))]
     [JsonPropertyName("age")] 
     public int Age { get; init; }
     [JsonPropertyName("eye_color")] public string EyeColor { get; init; } = "";
