@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GhiblixPreprocessor", "Ghib
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GhiblixShared", "GhiblixShared\GhiblixShared.csproj", "{53E8DB0C-4774-432D-AD6B-6D01FE1C6FEF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GhiblixBlazor", "GhiblixBlazor\GhiblixBlazor.csproj", "{969FE1AD-FF34-4057-B0BC-45FD4BDD4CC6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{53E8DB0C-4774-432D-AD6B-6D01FE1C6FEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53E8DB0C-4774-432D-AD6B-6D01FE1C6FEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53E8DB0C-4774-432D-AD6B-6D01FE1C6FEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{969FE1AD-FF34-4057-B0BC-45FD4BDD4CC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{969FE1AD-FF34-4057-B0BC-45FD4BDD4CC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{969FE1AD-FF34-4057-B0BC-45FD4BDD4CC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{969FE1AD-FF34-4057-B0BC-45FD4BDD4CC6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
