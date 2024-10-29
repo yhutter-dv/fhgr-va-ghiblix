@@ -1,10 +1,9 @@
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using GhiblixPreprocessor.DTOs;
 using GhiblixShared.Models;
 
-namespace GhiblixPreprocessor.Utils;
+namespace GhiblixPreprocessor;
 
 public static class Preprocessor
 {
@@ -16,11 +15,11 @@ public static class Preprocessor
     };
     private const string PreprocessSuffix = "preprocessed";
 
-    public static async Task DownloadGhibliImages(DirectoryInfo movieBannerDirectory, DirectoryInfo movieImageDirectory, GhibliDataDto dto)
+    public static async Task DownloadGhibliImages(DirectoryInfo movieBannerDirectory, DirectoryInfo movieImageDirectory, GhibliData data)
     {
         Directory.CreateDirectory(movieBannerDirectory.FullName);
         Directory.CreateDirectory(movieImageDirectory.FullName);
-        var imagePaths = dto.Movies.Select(m =>
+        var imagePaths = data.Movies.Select(m =>
         (
             m.Title,
             m.MovieBanner,
@@ -51,7 +50,7 @@ public static class Preprocessor
         await Task.WhenAll(imageDownloadTasks);
     }
 
-    public static GhibliDataDto? Preprocess(FileInfo dataFile)
+    public static GhibliData? Preprocess(FileInfo dataFile)
     {
         if (!dataFile.Exists)
         {
@@ -68,7 +67,7 @@ public static class Preprocessor
             // No need to do preprocessing just deserialize from existing already preprocessed file...
             Console.WriteLine($"Preprocessed File {preprocessedDataFile.FullName} already exists using that...");
             var dataContent = preprocessedDataFile.OpenRead();
-            var data = JsonSerializer.Deserialize<GhibliDataDto>(dataContent, JsonSerializerOptions);
+            var data = JsonSerializer.Deserialize<GhibliData>(dataContent, JsonSerializerOptions);
             return data;
         }
         try
@@ -81,10 +80,8 @@ public static class Preprocessor
                 Console.Error.WriteLine($"Failed to deserialize data from {dataFile.FullName}");
                 return null;
             }
-            var dataDto = GhibliDataDto.Preprocess(data);
-            Console.WriteLine($"Finished Preprocessing File writing file {preprocessedFileName}");
-            File.WriteAllText(preprocessedFileName, JsonSerializer.Serialize(dataDto, JsonSerializerOptions), encoding: Encoding.UTF8);
-            return dataDto;
+            File.WriteAllText(preprocessedFileName, JsonSerializer.Serialize(data, JsonSerializerOptions), encoding: Encoding.UTF8);
+            return data;
         }
         catch (Exception e)
         {
