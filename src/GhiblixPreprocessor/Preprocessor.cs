@@ -13,79 +13,81 @@ public static class Preprocessor
          PropertyNameCaseInsensitive = true,
          NumberHandling = JsonNumberHandling.AllowReadingFromString
     };
-    private const string PreprocessSuffix = "preprocessed";
 
-    public static async Task DownloadGhibliImages(DirectoryInfo movieBannerDirectory, DirectoryInfo movieImageDirectory, GhibliData data)
+    private static async Task DownloadImages(DirectoryInfo downloadDirectory, GhibliData data)
     {
-        Directory.CreateDirectory(movieBannerDirectory.FullName);
-        Directory.CreateDirectory(movieImageDirectory.FullName);
-        var imagePaths = data.Movies.Select(m =>
-        (
-            m.Title,
-            m.MovieBanner,
-            m.Image
-        ));
-
-        var imageDownloadTasks = imagePaths.Select(async imagePath =>
+        Directory.CreateDirectory(downloadDirectory.FullName);
+        var imageDownloadTasks = data.Movies.Select(async movie =>
         {
-            var movieBannerPath = $"{Path.Join(movieBannerDirectory.FullName, imagePath.Title)}.png";
-            var movieImagePath = $"{Path.Join(movieImageDirectory.FullName, imagePath.Title)}.png";
-
+            var imagePath = $"{Path.Join(downloadDirectory.FullName, movie.Title)}.png";
             using var httpClient = new HttpClient();
-
-            // Download and save movie banner
-            var bannerResponse = await httpClient.GetAsync(imagePath.MovieBanner);
-            bannerResponse.EnsureSuccessStatusCode();
-            var bannerBytes = await bannerResponse.Content.ReadAsByteArrayAsync();
-            Console.WriteLine($"Saving file {movieBannerPath}");
-            await File.WriteAllBytesAsync(movieBannerPath, bannerBytes);
-
-            // Download and save movie image
-            var imageResponse = await httpClient.GetAsync(imagePath.Image);
+            // Download and save image
+            var imageResponse = await httpClient.GetAsync(movie.Image);
             imageResponse.EnsureSuccessStatusCode();
             var imageBytes = await imageResponse.Content.ReadAsByteArrayAsync();
-            Console.WriteLine($"Saving file {movieImagePath}");
-            await File.WriteAllBytesAsync(movieImagePath, imageBytes);
+            Console.WriteLine($"Saving file {imagePath}");
+            await File.WriteAllBytesAsync(imagePath, imageBytes);
+            // Correct path to the image so that it points to the downloaded image path.
+            // Important: We use relative paths here so that we do not have hardcoded absolute paths when we deploy to a site hosting service such
+            // as GitHub Pages.
+            movie.MovieBanner = Path.GetRelativePath(downloadDirectory.Parent!.FullName, imagePath);
         });
+        // Download Images in parallel
         await Task.WhenAll(imageDownloadTasks);
     }
 
-    public static GhibliData? Preprocess(FileInfo dataFile)
+    public static async Task<GhibliData?> Preprocess(FileInfo inputFile, FileInfo outputFile, bool downloadImages)
     {
-        if (!dataFile.Exists)
+        if (!inputFile.Exists)
         {
-            Console.Error.WriteLine($"File {dataFile.FullName} does not exist");
+            await Console.Error.WriteLineAsync($"Input File {inputFile.FullName} does not exist");
             return null;
         }
-        
-        var nameWithoutExtension = Path.GetFileNameWithoutExtension(dataFile.FullName);
-        var preprocessedFullPathWithoutExtension = Path.Join(dataFile.DirectoryName, nameWithoutExtension);
-        var preprocessedFileName = $"{preprocessedFullPathWithoutExtension}_{PreprocessSuffix}{dataFile.Extension}";
-        var preprocessedDataFile = new FileInfo(preprocessedFileName);
-        if (preprocessedDataFile.Exists)
+
+        if (outputFile.Exists)
         {
             // No need to do preprocessing just deserialize from existing already preprocessed file...
-            Console.WriteLine($"Preprocessed File {preprocessedDataFile.FullName} already exists using that...");
-            var dataContent = preprocessedDataFile.OpenRead();
+            Console.WriteLine($"Preprocessed File {outputFile.FullName} already exists using that...");
+            var dataContent = outputFile.OpenRead();
             var data = JsonSerializer.Deserialize<GhibliData>(dataContent, JsonSerializerOptions);
+            if (data == null)
+            {
+                await Console.Error.WriteLineAsync($"Failed to deserialize data from {outputFile.FullName}");
+                return null;
+            }
+
+            if (!downloadImages) return data;
+            
+            // Download images inside a MovieImages Directory which is on the same level as the output file. 
+            var downloadImageDirectory = new DirectoryInfo(Path.Join(outputFile.DirectoryName, "MovieImages"));
+            Console.WriteLine("Downloading movie images...");
+            await DownloadImages(downloadImageDirectory, data);
             return data;
         }
         try
         {
-            Console.WriteLine($"Preprocessed File {preprocessedFileName} does not exist staring preprocessing and creating new one...");
-            var dataContent = dataFile.OpenRead();
+            Console.WriteLine($"Preprocessed File {outputFile.FullName} does not exist staring preprocessing and creating new one...");
+            var dataContent = inputFile.OpenRead();
             var data = JsonSerializer.Deserialize<GhibliData>(dataContent, JsonSerializerOptions);
             if (data == null)
             {
-                Console.Error.WriteLine($"Failed to deserialize data from {dataFile.FullName}");
+                await Console.Error.WriteLineAsync($"Failed to deserialize data from {inputFile.FullName}");
                 return null;
             }
-            File.WriteAllText(preprocessedFileName, JsonSerializer.Serialize(data, JsonSerializerOptions), encoding: Encoding.UTF8);
+
+            if (downloadImages)
+            {
+                // Download images inside a MovieImages Directory which is on the same level as the output file
+                var downloadImageDirectory = new DirectoryInfo(Path.Join(outputFile.DirectoryName, "MovieImages"));
+                Console.WriteLine("Downloading movie images...");
+                await DownloadImages(downloadImageDirectory, data);
+            }
+            await File.WriteAllTextAsync(outputFile.FullName, JsonSerializer.Serialize(data, JsonSerializerOptions), encoding: Encoding.UTF8);
             return data;
         }
         catch (Exception e)
         {
-            Console.Error.WriteLine($"ERROR occurred while preprocessing {dataFile.FullName}: {e}");
+            await Console.Error.WriteLineAsync($"ERROR occurred while preprocessing {inputFile.FullName}: {e}");
             return null;
         }
     }

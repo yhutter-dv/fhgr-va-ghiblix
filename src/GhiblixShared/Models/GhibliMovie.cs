@@ -10,7 +10,7 @@ public record GhibliMovie : IJsonOnSerializing
     [JsonPropertyName("original_title")] public string OriginalTitle { get; init; } = "";
     [JsonPropertyName("original_title_romanised")] public string OriginalTitleRomanised { get; init; } = "";
     [JsonPropertyName("image")] public string Image { get; init; } = "";
-    [JsonPropertyName("movie_banner")] public string MovieBanner { get; init; } = "";
+    [JsonPropertyName("movie_banner")] public string MovieBanner { get; set; } = "";
     [JsonPropertyName("description")] public string Description { get; init; } = "";
     [JsonPropertyName("director")] public string Director { get; init; } = "";
     [JsonPropertyName("producer")] public string Producer { get; init; } = "";
