@@ -2,9 +2,22 @@
     padding: 1rem;
     float: left;
     display: flex;
+    flex-direction: column;
     background-color: var(--dark-background);
     justify-content: center;
     margin: 0.5rem;
     border-radius: 12px;
     box-shadow: 4px 4px 32px 0 #282828;
+    
+    img {
+        max-height: 350px;
+        border-radius: 8px;
+    }
+    
+    .movie-details {
+        margin: 1rem 0;
+        p {
+            margin: 0;
+        }
+    }
 }

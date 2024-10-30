@@ -5,7 +5,7 @@ namespace GhiblixShared.Models;
 public record GhibliData
 {
     [JsonPropertyName("films")]
-    public List<GhibliMovie> Movies { get; init; } = [];
+    public List<GhibliMovie> Movies { get; set; } = [];
     
     [JsonPropertyName("people")]
     public List<GhibliPeople> Peoples { get; init; } = [];

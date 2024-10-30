@@ -30,7 +30,8 @@ public static class Preprocessor
             // Correct path to the image so that it points to the downloaded image path.
             // Important: We use relative paths here so that we do not have hardcoded absolute paths when we deploy to a site hosting service such
             // as GitHub Pages.
-            movie.MovieBanner = Path.GetRelativePath(downloadDirectory.Parent!.FullName, imagePath);
+            var relativePath = Path.GetRelativePath(downloadDirectory.Parent!.FullName, imagePath);
+            movie.MovieBanner = relativePath;
         });
         // Download Images in parallel
         await Task.WhenAll(imageDownloadTasks);

@@ -1,6 +1,5 @@
 ﻿@page "/"
 @using GhiblixShared.Models
-@using System.Security.Cryptography
 @inject HttpClient Http
 
 <PageTitle>Overview</PageTitle>
@@ -15,7 +14,12 @@ else
     @foreach (var movie in _ghibliData.Movies)
     {
         <div class="movie-card">
-            @movie.Title
+            <img src="@movie.MovieBanner" alt="">
+            <div class="movie-details">
+                <p>@movie.Title</p>
+                <p>@movie.OriginalTitle</p>
+                <p>Release Date: @movie.Year</p>
+            </div>
         </div>
     }
 }
@@ -27,6 +31,17 @@ else
     protected override async Task OnInitializedAsync()
     {
         _ghibliData = await Http.GetFromJsonAsync<GhibliData>("data/data_preprocessed.json");
+        if (_ghibliData != null && _ghibliData.Movies.Any())
+        {
+            // Set the correct image path. Currently the image paths is relative to the data_preprocessed.json file
+            // However we need to prepend /data/ to the path in order to make it an absolute path in the blazor app.
+            // Paths are resolved from wwwroot folder.
+            _ghibliData.Movies = _ghibliData.Movies.Select(m =>
+            {
+                m.MovieBanner = Path.Join("data", m.MovieBanner);
+                return m;
+            }).ToList();
+        }
     }
 
 }
