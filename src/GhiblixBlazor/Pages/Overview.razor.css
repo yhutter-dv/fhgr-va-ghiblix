@@ -1,0 +1,10 @@
+﻿.movie-card {
+    padding: 1rem;
+    float: left;
+    display: flex;
+    background-color: var(--dark-background);
+    justify-content: center;
+    margin: 0.5rem;
+    border-radius: 12px;
+    box-shadow: 4px 4px 32px 0 #282828;
+}

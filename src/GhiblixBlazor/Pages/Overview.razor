@@ -1,0 +1,32 @@
+﻿@page "/"
+@using GhiblixShared.Models
+@using System.Security.Cryptography
+@inject HttpClient Http
+
+<PageTitle>Overview</PageTitle>
+
+@if (_ghibliData == null)
+{
+    <p>Loading Movies...</p>
+}
+
+else
+{
+    @foreach (var movie in _ghibliData.Movies)
+    {
+        <div class="movie-card">
+            @movie.Title
+        </div>
+    }
+}
+
+@code {
+
+    private GhibliData? _ghibliData;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _ghibliData = await Http.GetFromJsonAsync<GhibliData>("data/data_preprocessed.json");
+    }
+
+}

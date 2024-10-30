@@ -16,4 +16,13 @@
     <ProjectReference Include="..\GhiblixShared\GhiblixShared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\bootstrap.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\bootstrap.min.css.map" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\data\" />
+  </ItemGroup>
+
 </Project>
