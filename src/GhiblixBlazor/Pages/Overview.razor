@@ -1,6 +1,8 @@
 ﻿@page "/"
+@using System.Net
+@using GhiblixBlazor.Services
 @using GhiblixShared.Models
-@inject HttpClient Http
+@inject IGhibliDataService GhibliDataService 
 
 <PageTitle>Overview</PageTitle>
 
@@ -30,18 +32,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        _ghibliData = await Http.GetFromJsonAsync<GhibliData>("data/data_preprocessed.json");
-        if (_ghibliData != null && _ghibliData.Movies.Any())
-        {
-            // Set the correct image path. Currently the image paths is relative to the data_preprocessed.json file
-            // However we need to prepend /data/ to the path in order to make it an absolute path in the blazor app.
-            // Paths are resolved from wwwroot folder.
-            _ghibliData.Movies = _ghibliData.Movies.Select(m =>
-            {
-                m.MovieBanner = Path.Join("data", m.MovieBanner);
-                return m;
-            }).ToList();
-        }
+        _ghibliData = await GhibliDataService.LoadGhibliData();
     }
 
 }
