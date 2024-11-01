@@ -45,15 +45,88 @@
     <div class="card-container">
         <div class="card">
             <p class="title">Score</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto debitis illo obcaecati quia! Dicta esse expedita explicabo fugit neque vero voluptate. Aliquam architecto harum iure necessitatibus nesciunt repellat, ut voluptatum.</p>
+            <Chart Config="_runtimeWithScoreBarChartConfig" @ref="_runtimeWithScoreBarChart"></Chart>
         </div>
-
-        <div class="card">
-            <p class="title">Score</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto debitis illo obcaecati quia! Dicta esse expedita explicabo fugit neque vero voluptate. Aliquam architecto harum iure necessitatibus nesciunt repellat, ut voluptatum.</p>
-        </div>
-        
     </div>
 </div>
 
+@code {
+
+    private BarChartConfig _runtimeWithScoreBarChartConfig;
+    private Chart _runtimeWithScoreBarChart;
+
+    protected override void OnInitialized()
+    {
+        _runtimeWithScoreBarChartConfig = new BarChartConfig
+        {
+            Options = new Options()
+            {
+                Plugins = new Plugins()
+                {
+                    Legend = new Legend()
+                    {
+                        Align = Align.Center,
+                        Display = false,
+                        Position = LegendPosition.Right
+                    }
+                },
+                Scales = new Dictionary<string, Axis>()
+                {
+                    {
+                        Scales.XAxisId, new Axis()
+                        {
+                            Grid = new Grid()
+                            {
+                                Display = false
+                            },
+                            Stacked = false,
+                            Ticks = new Ticks()
+                            {
+                                MaxRotation = 0,
+                                MinRotation = 0
+                            }
+                        }
+                    },
+                    {
+                        Scales.YAxisId, new Axis()
+                        {
+                            Stacked = false,
+                            Grid = new Grid()
+                            {
+                                Display = false
+                            }
+                        }
+                    }
+                }
+            },
+            Data =
+            {
+                Labels = ["1986", "1989", "1993"]
+            }
+        };
+
+        _runtimeWithScoreBarChartConfig.Data.Datasets.Add(new BarDataset
+        {
+            Label = "70 Minutes",
+            Data = [9, 10, 3],
+            BackgroundColor = ["#5DE4C7"],
+            BorderWidth = 0 
+        });
+
+        _runtimeWithScoreBarChartConfig.Data.Datasets.Add(new BarDataset
+        {
+            Label = "90 Minutes",
+            Data = [7, 2, 1],
+            BackgroundColor = ["#89DDFF"],
+            BorderWidth = 0,
+        });
+        _runtimeWithScoreBarChartConfig.Data.Datasets.Add(new BarDataset
+        {
+            Label = "120 Minutes",
+            Data = [3, 5, 6],
+            BackgroundColor = ["#D0679D"],
+            BorderWidth = 0 
+        });
+    } 
+}
 
