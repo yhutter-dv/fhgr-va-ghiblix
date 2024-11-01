@@ -16,16 +16,9 @@
         display: flex;
         flex-direction: row;
         justify-content: end;
-        a {
-            &.active {
-                color: var(--dark-purple);
-                font-weight: bold;
-            }
-        }
     }
     
     .nav-link {
-        color: var(--dark-foreground);
         margin-right: 1rem;
     }
 
@@ -34,7 +27,7 @@
         margin-right: 1rem;
         width: 1.4rem;
         height: 1.4rem;
-        background-color: var(--dark-aqua);
+        background-color: var(--dark-green);
         border-radius: 100%;
         align-self: center;
     }

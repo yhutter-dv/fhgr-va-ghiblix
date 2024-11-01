@@ -13,11 +13,11 @@ else
 {
     @foreach (var movie in _ghibliData.Movies)
     {
-        <div class="movie-card">
+        <div class="movie-card clearfix">
             <img src="@movie.MovieBanner" alt="">
             <div class="movie-details">
-                <p>@movie.Title</p>
-                <p>@movie.OriginalTitle</p>
+                <p class="movie-title">@movie.Title</p>
+                <p class="movie-title">@movie.OriginalTitle</p>
                 <p>Release Date: @movie.Year</p>
             </div>
         </div>
