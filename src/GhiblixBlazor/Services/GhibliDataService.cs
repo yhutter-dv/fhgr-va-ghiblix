@@ -28,5 +28,10 @@ public class GhibliDataService(HttpClient httpClient) : IGhibliDataService
         
         return _ghibliData;
     }
-    
+
+    public async Task<IEnumerable<int>> GetMovieReleaseYears()
+    {
+        await LoadGhibliData();
+        return _ghibliData?.Movies.Select(m => m.Year).Distinct() ?? Array.Empty<int>();
+    }
 }

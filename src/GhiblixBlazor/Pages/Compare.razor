@@ -1,5 +1,7 @@
 ﻿@page "/compare"
+@using GhiblixBlazor.Services
 @inject HttpClient Http
+@inject IGhibliDataService GhibliDataService
 
 <PageTitle>Compare</PageTitle>
 
@@ -23,12 +25,10 @@
 
     <p class="section-title">Year of Release</p>
     <div class="year-button-container">
-        <button class="filter-button" type="button">1986</button>
-        <button class="filter-button" type="button">1986</button>
-        <button class="filter-button" type="button">1993</button>
-        <button class="filter-button" type="button">1993</button>
-        <button class="filter-button" type="button">1993</button>
-        <button class="filter-button" type="button">1993</button>
+        @foreach (var year in _movieReleaseYears)
+        {
+            <button class="filter-button" type="button">@year</button>
+        }
     </div>
     
     <div class="spacer"></div>
@@ -54,9 +54,11 @@
 
     private BarChartConfig _runtimeWithScoreBarChartConfig;
     private Chart _runtimeWithScoreBarChart;
+    private IEnumerable<int> _movieReleaseYears;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
+        _movieReleaseYears = await GhibliDataService.GetMovieReleaseYears(); 
         _runtimeWithScoreBarChartConfig = new BarChartConfig
         {
             Options = new Options()
