@@ -6,15 +6,15 @@
 
 <PageTitle>Overview</PageTitle>
 
-@if (_ghibliData == null)
-{
-    <p>Loading Movies...</p>
-}
-
-else
-{
-    @foreach (var movie in _ghibliData.Movies)
+<div class="content">
+    @if (_ghibliData == null)
     {
+        <p>Loading Movies...</p>
+    }
+    else
+    {
+        @foreach (var movie in _ghibliData.Movies)
+        {
         <div class="movie-card clearfix">
             <img src="@movie.MovieBanner" alt="">
             <div class="movie-details">
@@ -23,8 +23,9 @@ else
                 <p>Release Date: @movie.Year</p>
             </div>
         </div>
+        }
     }
-}
+</div>
 
 @code {
 

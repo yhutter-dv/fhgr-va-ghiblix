@@ -6,6 +6,8 @@
     padding: 0 0.2rem;
     align-items: center;
     gap: 1.5rem;
+    height: var(--nav-menu-height);
+    z-index: 10;
     
     .nav-title {
         margin-left: 1rem;

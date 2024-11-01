@@ -1,7 +1,43 @@
-﻿@page "/weather"
+﻿@page "/compare"
 @inject HttpClient Http
 
 <PageTitle>Compare</PageTitle>
 
-<h1>TODO</h1>
+<div class="filter-sidebar">
+    <p class="title">Filter Settings</p>
+    
+    <p class="section-title">Runtime</p>
+    <p class="section-subtitle">in minutes</p>
+    <div class="slider-container">
+        <p class="slider-text">0</p>
+        <input type="range" min="0" max="100" value="50" class="slider">
+        <p class="slider-text">100</p>
+    </div>
+    
+    <p class="section-title">Number of races</p>
+    <div class="slider-container">
+        <p class="slider-text">0</p>
+        <input type="range" min="0" max="100" value="50" class="slider">
+        <p class="slider-text">100</p>
+    </div>
+
+    <p class="section-title">Year of Release</p>
+    <div class="year-button-container">
+        <button class="filter-button" type="button">1986</button>
+        <button class="filter-button" type="button">1986</button>
+        <button class="filter-button" type="button">1993</button>
+        <button class="filter-button" type="button">1993</button>
+        <button class="filter-button" type="button">1993</button>
+        <button class="filter-button" type="button">1993</button>
+    </div>
+    
+    <div class="spacer"></div>
+    
+    <div class="apply-filter-container">
+        <button class="filter-button active" type="button">Apply</button>
+        <button class="filter-button" type="button">Show All</button>
+    </div>
+
+</div>
+
 

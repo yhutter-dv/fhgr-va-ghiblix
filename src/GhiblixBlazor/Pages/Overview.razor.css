@@ -1,4 +1,7 @@
-﻿.movie-card {
+﻿.content {
+    padding: 1rem;
+}
+.movie-card {
     padding: 1rem;
     float: left;
     display: flex;

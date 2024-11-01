@@ -4,6 +4,8 @@
     --dark-foreground: #A6ACCD;
     --dark-primary: #D0679D;
     --dark-green: #5DE4C7;
+    --nav-menu-height: 80px;
+    --filter-sidebar-width: 200px;
 }
 body {
     margin: 0;
