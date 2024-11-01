@@ -112,6 +112,7 @@
         gap: 1rem;
         .card {
             padding: 1rem;
+            width: 600px;
             display: flex;
             flex-direction: column;
             background-color: var(--dark-background);

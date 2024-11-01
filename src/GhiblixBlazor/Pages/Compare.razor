@@ -1,4 +1,5 @@
 ﻿@page "/compare"
+@using GhiblixBlazor.Models
 @using GhiblixBlazor.Services
 @inject HttpClient Http
 @inject IGhibliDataService GhibliDataService
@@ -55,10 +56,17 @@
     private BarChartConfig _runtimeWithScoreBarChartConfig;
     private Chart _runtimeWithScoreBarChart;
     private IEnumerable<int> _movieReleaseYears;
-
+    
     protected override async Task OnInitializedAsync()
     {
-        _movieReleaseYears = await GhibliDataService.GetMovieReleaseYears(); 
+        _movieReleaseYears = await GhibliDataService.GetMovieReleaseYears();
+        var maxRuntime = 999; // TODO: Make runtime dynamic
+        var data = await GhibliDataService.GetRuntimeWithScores(_movieReleaseYears.Take(10), maxRuntime);
+        InitializeRuntimeWithScoreBarChart(data);
+    }
+
+    private void InitializeRuntimeWithScoreBarChart(RuntimeWithScoreData data)
+    {
         _runtimeWithScoreBarChartConfig = new BarChartConfig
         {
             Options = new Options()
@@ -103,32 +111,17 @@
             },
             Data =
             {
-                Labels = ["1986", "1989", "1993"]
+                Labels = new List<string>(data.Years.Select(x => x.ToString()))
             }
         };
-
         _runtimeWithScoreBarChartConfig.Data.Datasets.Add(new BarDataset
         {
-            Label = "70 Minutes",
-            Data = [9, 10, 3],
+            Label = $"{data.RuntimeInMinutes} Minutes",
+            Data = data.AverageScores.ToList(),
             BackgroundColor = ["#5DE4C7"],
-            BorderWidth = 0 
+            BorderWidth = 0
         });
+    }
 
-        _runtimeWithScoreBarChartConfig.Data.Datasets.Add(new BarDataset
-        {
-            Label = "90 Minutes",
-            Data = [7, 2, 1],
-            BackgroundColor = ["#89DDFF"],
-            BorderWidth = 0,
-        });
-        _runtimeWithScoreBarChartConfig.Data.Datasets.Add(new BarDataset
-        {
-            Label = "120 Minutes",
-            Data = [3, 5, 6],
-            BackgroundColor = ["#D0679D"],
-            BorderWidth = 0 
-        });
-    } 
 }
 

@@ -1,4 +1,5 @@
 using System.Net.Http.Json;
+using GhiblixBlazor.Models;
 using GhiblixShared.Models;
 
 namespace GhiblixBlazor.Services;
@@ -33,5 +34,27 @@ public class GhibliDataService(HttpClient httpClient) : IGhibliDataService
     {
         await LoadGhibliData();
         return _ghibliData?.Movies.Select(m => m.Year).Distinct() ?? Array.Empty<int>();
+    }
+
+    public async Task<RuntimeWithScoreData> GetRuntimeWithScores(IEnumerable<int> years, int maxRuntime)
+    {
+        await LoadGhibliData();
+        IEnumerable<decimal?> averageScores = new List<decimal?>();
+        IEnumerable<double> averageRuntimes = new List<double>();
+        
+        foreach (var year in years)
+        {
+            var filteredMovies = _ghibliData!.Movies.Where(m => m.Year == year && m.RunningTimeMinutes <= maxRuntime).ToList();
+            var averageScore = (decimal?)filteredMovies.Average(x => x.RottenTomatoScore);
+            var averageRuntimeForThisYear = filteredMovies.Average(x => x.RunningTimeMinutes);
+            averageScores = averageScores.Append(averageScore);
+            averageRuntimes = averageRuntimes.Append(averageRuntimeForThisYear);
+        }
+        return new()
+        {
+            Years = years,
+            AverageScores = averageScores,
+            RuntimeInMinutes = (int) averageRuntimes.Average(),
+        };
     }
 }
